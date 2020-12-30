@@ -1,5 +1,3 @@
-# predict_future_salary
-
 # Programming vacancies compare
 
 This program searches for vacancies on websites [hh.ru](https://hh.ru/) and [superjob.ru](https://www.superjob.ru/) and outputs the average salary for each of the popular programming languages
