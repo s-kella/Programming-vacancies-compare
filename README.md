@@ -7,7 +7,7 @@ This program searches for vacancies on websites [hh.ru](https://hh.ru/) and [sup
 Register [here](https://api.superjob.ru/register) and copy the Secret key.
 Create a file .env with content.
 ```
-SUPERJOB_KEY = [secret_key]
+SUPERJOB_KEY=[secret_key]
 ```
 Paste your secret key instead of [secret_key].
 
