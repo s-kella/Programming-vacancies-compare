@@ -57,7 +57,6 @@ def find_on_hh():
         average, skipped, vacancies_found, vacancies_with_salary = get_info_about_vacancy(payload, url, language)
         languages[language] = {
             'language': language,
-            #'vacancies_found': response.json()['found'],
             'vacancies_found': vacancies_found,
             'vacancies_processed': vacancies_with_salary,
             'skipped': skipped,
