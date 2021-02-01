@@ -20,7 +20,7 @@ pip install -r requirements.txt
 ### Example of running
 
 ```
-main.py
+python main.py
 ```
 
 ### Example of output 
