@@ -34,23 +34,22 @@ def get_info_about_vacancy(payload, url, language):
     return average, skipped, vacancies_found, vacancies_with_salary
 
 
-def find_on_hh():
+def get_data_hh(languages):
     url = 'https://api.hh.ru/vacancies/'
     payload = {
         'area': '1',
         'period': '30',
         'text': 'программист'
     }
-
     data_about_languages = []
-    for language in utils.languages:
+    for language in languages:
         average, skipped, vacancies_found, vacancies_with_salary = get_info_about_vacancy(payload, url, language)
-        utils.languages[language] = {
+        languages[language] = {
             'language': language,
             'vacancies_found': vacancies_found,
             'vacancies_processed': vacancies_with_salary,
             'skipped': skipped,
             'average_salary': average
         }
-        data_about_languages = utils.join_data_for_table(utils.languages[language], data_about_languages)
+        data_about_languages = utils.join_data_for_table(languages[language], data_about_languages)
     return SingleTable(data_about_languages, 'HeadHunter Moscow').table
