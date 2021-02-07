@@ -15,19 +15,4 @@ def predict_rub_salary(frm, to):
     return predict
 
 
-languages = {
-    'JavaScript': 0,
-    'Java': 0,
-    'python': 0,
-    'ruby': 0,
-    'PHP': 0,
-    'c++': 0,
-    'c#': 0,
-    'c': 0,
-    'go': 0,
-    'Objective-C': 0,
-    'Scala': 0,
-    'Swift': 0,
-    'TypeScript': 0
-}
 header_table = ['language', 'vacancies found', 'vacancies processed', 'skipped', 'average salary']
