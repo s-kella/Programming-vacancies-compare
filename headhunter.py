@@ -5,24 +5,21 @@ import utils
 
 def get_info_about_vacancy(payload, url, language):
     page = 0
-    if 'page' in payload:
-        del payload['page']
     payload['text'] = f'программист {language}'
-    response = requests.get(url, params=payload)
-    response.raise_for_status()
-    pages_number = response.json()['pages']
     average = 0
     vacancies_with_salary = 0
     skipped = 0
+    pages_number = 1
     while page < pages_number:
         payload['page'] = page
         page += 1
         response = requests.get(url, params=payload)
         response.raise_for_status()
         vacancies = response.json()['items']
+        pages_number = response.json()['pages']
         for vacancy in vacancies:
             salary = vacancy['salary']
-            if salary is not None and salary['currency'] == 'RUR':
+            if salary and salary['currency'] == 'RUR':
                 predict = utils.predict_rub_salary(salary['from'], salary['to'])
                 average += predict
                 vacancies_with_salary += 1
@@ -36,20 +33,16 @@ def get_info_about_vacancy(payload, url, language):
 
 def get_data_hh(languages):
     url = 'https://api.hh.ru/vacancies/'
+    id_region = '1'
     payload = {
-        'area': '1',
+        'area': id_region,
         'period': '30',
         'text': 'программист'
     }
-    data_about_languages = []
+    all_lang_stat = []
     for language in languages:
         average, skipped, vacancies_found, vacancies_with_salary = get_info_about_vacancy(payload, url, language)
-        languages[language] = {
-            'language': language,
-            'vacancies_found': vacancies_found,
-            'vacancies_processed': vacancies_with_salary,
-            'skipped': skipped,
-            'average_salary': average
-        }
-        data_about_languages = utils.join_data_for_table(languages[language], data_about_languages)
-    return SingleTable(data_about_languages, 'HeadHunter Moscow').table
+        all_lang_stat.append([language, vacancies_found, vacancies_with_salary, skipped, average])
+    table = utils.make_a_table(all_lang_stat)
+    return table
+

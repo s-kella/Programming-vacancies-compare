@@ -21,35 +21,35 @@ def download_vacancies(payload, url, header):
     return vacancies, response
 
 
+def get_language_stat(language, payload, url, header):
+    payload['keywords[0][keys]'] = language
+    page = 0
+    average = 0
+    skipped = 0
+    vacancies_with_salary = 0
+    while True:
+        payload['page'] = page
+        vacancies, response = download_vacancies(payload, url, header)
+        average, skipped, vacancies_with_salary = process_vacancies(vacancies, average, vacancies_with_salary, skipped)
+        page += 1
+        if len(vacancies) == 0:
+            break
+    if vacancies_with_salary:
+        average = int(average / vacancies_with_salary)
+    return [language, response.json()['total'], vacancies_with_salary, skipped, average]
+
+
 def get_data_sj(key, languages):
     url = 'https://api.superjob.ru/2.0/vacancies/'
     header = {'X-Api-App-Id': key}
+    id_field_of_work = 48
+    id_in_which_block_search = 1
+    all_lang_stat = []
     payload = {'town': 'Москва',
-               'catalogues': 48,
-               'keywords[0][srws]': 1}
-    data_about_languages = []
+               'catalogues': id_field_of_work,
+               'keywords[0][srws]': id_in_which_block_search}
     for language in languages:
-        payload['keywords[0][keys]'] = language
-        page = 0
-        average = 0
-        skipped = 0
-        vacancies_with_salary = 0
-        while True:
-            payload['page'] = page
-            vacancies, response = download_vacancies(payload, url, header)
-            average, skipped, vacancies_with_salary = process_vacancies(vacancies, average, vacancies_with_salary, skipped)
-            page += 1
-            if len(vacancies) == 0:
-                break   
-        if vacancies_with_salary:
-            average = int(average / vacancies_with_salary)
-        languages[language] = {
-            'language': language,
-            'vacancies_found': response.json()['total'],
-            'vacancies_processed': vacancies_with_salary,
-            'skipped': skipped,
-            'average_salary': average,
-        }
-        data_about_languages = utils.join_data_for_table(languages[language], data_about_languages)
-    return SingleTable(data_about_languages, 'SuperJob Moscow').table
+        all_lang_stat.append(get_language_stat(language, payload, url, header))
+    table = utils.make_a_table(all_lang_stat)
+    return table
 
