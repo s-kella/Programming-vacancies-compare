@@ -34,9 +34,9 @@ def get_info_about_vacancy(payload, url, language):
 
 def get_data_hh(languages):
     url = 'https://api.hh.ru/vacancies/'
-    id_region = '1'
+    region_id = '1'
     payload = {
-        'area': id_region,
+        'area': region_id,
         'period': '30',
         'text': 'программист'
     }

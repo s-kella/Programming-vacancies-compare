@@ -43,11 +43,11 @@ def get_language_stat(language, payload, url, header):
 def get_data_sj(key, languages):
     url = 'https://api.superjob.ru/2.0/vacancies/'
     header = {'X-Api-App-Id': key}
-    id_field_of_work = 48
+    field_of_work_id = 48
     id_in_which_block_search = 1
     all_lang_stat = []
     payload = {'town': 'Москва',
-               'catalogues': id_field_of_work,
+               'catalogues': field_of_work_id,
                'keywords[0][srws]': id_in_which_block_search}
     for language in languages:
         all_lang_stat.append(get_language_stat(language, payload, url, header))
