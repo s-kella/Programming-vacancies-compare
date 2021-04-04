@@ -17,8 +17,9 @@ def process_vacancies(vacancies, average, vacancies_with_salary, skipped):
 def download_vacancies(payload, url, header):
     response = requests.get(url, headers=header, params=payload)
     response.raise_for_status()
-    vacancies = response.json()['objects']
-    return vacancies, response
+    downloaded_data = response.json()
+    vacancies = downloaded_data['objects']
+    return vacancies, response, downloaded_data
 
 
 def get_language_stat(language, payload, url, header):
@@ -29,14 +30,14 @@ def get_language_stat(language, payload, url, header):
     vacancies_with_salary = 0
     while True:
         payload['page'] = page
-        vacancies, response = download_vacancies(payload, url, header)
+        vacancies, response, downloaded_data = download_vacancies(payload, url, header)
         average, skipped, vacancies_with_salary = process_vacancies(vacancies, average, vacancies_with_salary, skipped)
         page += 1
         if len(vacancies) == 0:
             break
     if vacancies_with_salary:
         average = int(average / vacancies_with_salary)
-    return [language, response.json()['total'], vacancies_with_salary, skipped, average]
+    return [language, downloaded_data['total'], vacancies_with_salary, skipped, average]
 
 
 def get_data_sj(key, languages):

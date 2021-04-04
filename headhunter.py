@@ -15,8 +15,9 @@ def get_info_about_vacancy(payload, url, language):
         page += 1
         response = requests.get(url, params=payload)
         response.raise_for_status()
-        vacancies = response.json()['items']
-        pages_number = response.json()['pages']
+        downloaded_data = response.json()
+        vacancies = downloaded_data['items']
+        pages_number = downloaded_data['pages']
         for vacancy in vacancies:
             salary = vacancy['salary']
             if salary and salary['currency'] == 'RUR':
@@ -27,7 +28,7 @@ def get_info_about_vacancy(payload, url, language):
                 skipped += 1
     if vacancies_with_salary != 0:
         average = int(average / vacancies_with_salary)
-    vacancies_found = response.json()['found']
+    vacancies_found = downloaded_data['found']
     return average, skipped, vacancies_found, vacancies_with_salary
 
 
