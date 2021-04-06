@@ -1,5 +1,4 @@
 import requests
-from terminaltables import SingleTable
 import utils
 
 
