@@ -12,10 +12,10 @@ def predict_rub_salary(frm, to):
     return predict
 
 
-def make_a_table(all_lang_stat):
+def make_a_table(all_lang_stat, title):
     result = [copy.deepcopy(header_table)]
     result.extend(all_lang_stat)
-    table = SingleTable(result, 'SuperJob Moscow').table
+    table = SingleTable(result, title).table
     return table
 
 
