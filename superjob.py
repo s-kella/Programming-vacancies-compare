@@ -18,7 +18,7 @@ def download_vacancies(payload, url, header):
     response.raise_for_status()
     downloaded_data = response.json()
     vacancies = downloaded_data['objects']
-    return vacancies, response, downloaded_data
+    return vacancies, downloaded_data
 
 
 def get_language_stat(language, payload, url, header):
@@ -29,7 +29,7 @@ def get_language_stat(language, payload, url, header):
     vacancies_with_salary = 0
     while True:
         payload['page'] = page
-        vacancies, response, downloaded_data = download_vacancies(payload, url, header)
+        vacancies, downloaded_data = download_vacancies(payload, url, header)
         average, skipped, vacancies_with_salary = process_vacancies(vacancies, average, vacancies_with_salary, skipped)
         page += 1
         if len(vacancies) == 0:
@@ -50,6 +50,7 @@ def get_data_sj(key, languages):
                'keywords[0][srws]': id_in_which_block_search}
     for language in languages:
         all_lang_stat.append(get_language_stat(language, payload, url, header))
-    table = utils.make_a_table(all_lang_stat)
+    title = 'SuperJob Moscow'
+    table = utils.make_a_table(all_lang_stat, title)
     return table
 
