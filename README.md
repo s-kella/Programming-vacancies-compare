@@ -64,4 +64,4 @@ python main.py
 
 ### Project Goals
 
-The code is written for educational purposes
+The code is written for educational purposes.
